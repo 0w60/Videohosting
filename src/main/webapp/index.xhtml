@@ -1,0 +1,142 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <title>WEB VIDEOHOSTING</title>
+    </h:head>
+    <h:body>
+        <h:form id="tableForm" enctype="multipart/form-data">
+
+            <p:dataTable id="movieTable"
+                         value="#{viewBean.dao.itemsList}"
+                         var="item">
+
+                <p:column id="movieColumn"
+                          style="width: 25%"
+                          headerText="MOVIE">
+
+                    <p:media value="#{viewBean.showMovie()}"
+                             width="250" height="156" player="windows">
+                        <f:param name="autostart"
+                                 value="false"/>
+                        <f:param 
+                            id="movieId"
+                            name="movieId"
+                            value="#{item.id}"/>
+                    </p:media>
+                </p:column>
+
+                <p:column id="descriptionColumn"
+                          style="width: 30%"
+                          headerText="DESCRIPTION"
+                          filterBy="description"
+                          filterMatchMode="contains">
+                    #{item.description}
+                </p:column>
+
+                <p:column id="dateColumn"
+                          headerText="UPLOAD DATE"
+                          style="width: 15%"
+                          sortBy="dateOfCreation">
+                    #{item.dateOfCreation}
+                </p:column>
+
+                <p:column id="commentsColumn"
+                          headerText="COMMENTS"
+                          style="width: 5%">
+                    #{item.countOfComments}
+                </p:column>
+
+                <p:column id="likesColumn"
+                          headerText="LIKES"
+                          style="width: 5%">
+                    #{item.countOfLikes}
+                </p:column>
+
+                <p:column id="buttonsColumn"
+                          headerText="ACTIONS"
+                          style="width: 10.3%">
+
+                    <p:commandButton id="deleteButton"
+                                     title="Delete movie"
+                                     styleClass="ui-button-icon-only secondary small"
+                                     icon="ui-icon-close"
+                                     style="float: right; width: 32px; height:20px"
+                                     action="#{viewBean.dao.removeItem(item)}"
+                                     update="movieTable"/>
+
+                    <p:commandButton id="likeButton"
+                                     title="Like!"
+                                     styleClass="ui-button-icon-only secondary small"
+                                     icon="ui-icon-star"
+                                     style="float: right; width: 32px; height:20px"
+                                     action="#{item.addLike}"
+                                     update="movieTable"/>
+
+                    <p:commandButton id="viewButton"
+                                     title="View this movie"
+                                     style="width: 32px; height:20px; float: right"
+                                     styleClass="ui-button-icon-only secondary small"
+                                     icon="ui-icon-search"
+                                     ajax="false"
+                                     action="viewMovie">
+                        <f:setPropertyActionListener value="#{item}"
+                                                     target="#{viewMovieBean.selectedItem}" />
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+            <p:commandButton id="addButton"
+                             value="Add movie"
+                             style="float: left; height: 35px;"
+                             onclick="addDialog.show()"/>
+        </h:form>
+
+        <!--ADD DIALOG-->
+        <h:form id="addDialogForm" enctype="multipart/form-data">
+            <p:dialog id="addDialog"
+                      widgetVar="addDialog"
+                      modal="true"
+                      resizable="false"
+                      header="ADD NEW MOVIE">
+
+                <p:panelGrid id="addDialogGrid"
+                             columns="2">
+
+                    Select movie to upload
+
+                    <p:fileUpload id="fileUpload"
+                                  mode="simple"
+                                  value="#{fileHandleBean.file}"/>
+
+                    Describe the movie:
+
+                    <h:inputText id="inputDescription"
+                                 value="#{crudBean.newItem.description}"/>
+                </p:panelGrid>
+
+                <p:commandButton id="addOkButton"
+                                 value="Ok"
+                                 style="float: right; height: 35px"
+                                 ajax="false"
+                                 actionListener="#{fileHandleBean.makeBuffer()}" 
+                                 action="#{crudBean.createItem}"
+                                 update="movieTable"
+                                 onclick="addDialog.hide()"/>                
+
+                <h:outputText value="     "/>
+
+                <p:commandButton id="addCancelButton"
+                                 value="Cancel"
+                                 style="float: right; height: 35px; width: 95px;"
+                                 ajax="false"
+                                 onclick="addDialog.hide()"/>
+            </p:dialog>
+        </h:form>
+    </h:body>
+</html>
+

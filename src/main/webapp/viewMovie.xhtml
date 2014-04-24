@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <title>WATCH MOVIE</title>
+    </h:head>
+    <h:body>
+        <h:form id="viewMovieForm"
+                enctype="multipart/form-data">
+
+            <p:media id="viewMovieMedia"
+                     width="640" height="400"
+                     player="windows"
+                     value="#{viewMovieBean.showMovie()}">
+                <f:param id="viewMovieId"
+                         name="viewMovieId"
+                         value="#{viewMovieBean.selectedItem.id}"/>
+            </p:media>
+
+            <p:panelGrid id="viewMoviePanelGrid"
+                         columns="2">
+
+                <p:outputLabel value="Description:"/> <h:outputText value="#{viewMovieBean.selectedItem.description}"/> 
+                <h:outputText value="Likes:"/> <h:outputText value="#{viewMovieBean.selectedItem.countOfLikes}"/>
+                <h:outputText value="Comments: #{viewMovieBean.selectedItem.countOfComments}"/>
+                <p:dataList id="commentsList"
+                            value="#{viewMovieBean.selectedItem.commentsList}"
+                            var="comments">
+                    #{comments}
+                </p:dataList>
+            </p:panelGrid>
+            <br/>
+
+            <p:commandButton id="backButton"
+                             value="Back"
+                             style="height: 35px;"
+                             action="index"/>
+
+            <h:outputText value="     "/>
+
+            <p:commandButton id="addCommentButton"
+                             value="Add comment"
+                             style="height: 35px;"
+                             onclick="addCommentDialog.show()"/>
+
+            <h:outputText value="     "/>
+
+            <p:commandButton id="downloadButton"
+                             value="Download movie"
+                             style="height: 35px;"
+                             ajax="false">
+                <p:fileDownload id="movieDownload"
+                                value="#{viewMovieBean.fileToDownload}"/>
+            </p:commandButton>
+
+            <p:dialog id="addCommentDialog"
+                      widgetVar="addCommentDialog"
+                      modal="true"
+                      resizable="false"
+                      header="ADD NEW COMMENT">
+                <p:panelGrid id="addCommentPanel"
+                             columns="2">
+                    Your comment: <h:inputText value="#{viewMovieBean.comment}"/>
+                </p:panelGrid>
+                <br/>
+
+                <p:commandButton id="addCommentOkButton"
+                                 value="Ok"
+                                 style="float: right; height: 35px;"
+                                 actionListener="#{viewMovieBean.addCommentToCommentsList()}"
+                                 update="viewMoviePanelGrid"
+                                 onclick="addCommentDialog.hide()"/>
+
+                <h:outputText value="     "/>
+
+                <p:commandButton id="addCommentCancelButton"
+                                 value="Cancel"
+                                 style="float: right; height: 35px;"
+                                 onclick="addCommentDialog.hide()"/>
+            </p:dialog>
+        </h:form>
+    </h:body>
+</html>
+
