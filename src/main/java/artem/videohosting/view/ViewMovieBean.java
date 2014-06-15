@@ -1,8 +1,8 @@
-package exam.engagepoint.videohosting.view;
+package artem.videohosting.view;
 
-import exam.engagepoint.videohosting.controller.Dao;
-import exam.engagepoint.videohosting.controller.FileHandlerBean;
-import exam.engagepoint.videohosting.model.Item;
+import artem.videohosting.controller.Dao;
+import artem.videohosting.controller.FileHandlerBean;
+import artem.videohosting.model.Item;
 import java.io.ByteArrayInputStream;
 import java.io.Serializable;
 import javax.enterprise.context.SessionScoped;

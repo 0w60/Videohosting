@@ -1,4 +1,4 @@
-package exam.engagepoint.videohosting.controller;
+package artem.videohosting.controller;
 
 import java.io.IOException;
 import java.util.logging.Level;

@@ -1,6 +1,6 @@
-package exam.engagepoint.videohosting.controller;
+package artem.videohosting.controller;
 
-import exam.engagepoint.videohosting.model.Item;
+import artem.videohosting.model.Item;
 import java.io.Serializable;
 import java.util.Date;
 import javax.enterprise.context.RequestScoped;

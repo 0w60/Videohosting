@@ -1,4 +1,4 @@
-package exam.engagepoint.videohosting.model;
+package artem.videohosting.model;
 
 import java.util.ArrayList;
 import java.util.Date;
